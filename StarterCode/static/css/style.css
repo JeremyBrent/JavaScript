@@ -1,4 +1,4 @@
-* {
+ * {
   box-sizing: border-box;
   font-family: Ubuntu, sans-serif;
 }
@@ -117,6 +117,10 @@ select {
   animation-delay: 1.2s;
 }
 
+.form-control {
+  padding: 8px 5px;
+}
+
 /* input placeholder color changes */
 .form-control::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
@@ -133,7 +137,7 @@ select {
   color: #8e979f;
 }
 
-.form-control:-moz-placeholder {
+.:-moz-placeholder {
   /* Firefox 18- */
   color: #8e979f;
 }
