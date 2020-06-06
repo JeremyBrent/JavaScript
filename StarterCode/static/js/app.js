@@ -1,7 +1,9 @@
 // from data.js
 var tableData = data;
-// YOUR CODE HERE!
 
+
+// Putting data in table
+// 
 var tbody = d3.select("#ufo-tablebody")
 
 tableData.forEach((ufoRecord) => {
@@ -15,104 +17,90 @@ tableData.forEach((ufoRecord) => {
 })
 
 
+
+
+
 // Making the the dropdown for the dates
-var difDates = [...new Set(tableData.map(x => x.datetime))]; 
-var dateBtn = d3.select("#dateBtn")
-var dateList = d3.select("#date-dropdown-menu")
+//
+var difDates = [...new Set(tableData.map(x => x.datetime))];
+
+var dateList = d3.select("#date-dropdown-menu");
 
 function addDate() {
-    dateList.text("")
+    dateList.text("");
     for (var i = 0; i < difDates.length; i++) {
-        dateList.append("li").attr('class','dateListEle').text(difDates[i]);
+        dateList.append("option").attr('class', 'dateListEle').text(difDates[i]);
     }
 }
 
-dateBtn.on('click',addDate);  
+dateList.on('click', addDate);
 
 
 // Making the the dropdown for the cities
-var difCities = [...new Set(tableData.map(x => x.city))]; 
-var cityBtn = d3.select("#cityBtn")
-var cityList = d3.select("#city-dropdown-menu")
+// 
+var difCities = [...new Set(tableData.map(x => x.city).sort())];
+var cityList = d3.select("#city-dropdown-menu");
 function addCity() {
-    cityList.text("")
+    cityList.text("");
     for (var i = 0; i < difCities.length; i++) {
-        cityList.append("li").attr('class','cityListEle').text(difCities[i]);
+        cityList.append("option").attr('class', 'cityListEle').text(difCities[i]);
     }
 }
 
-cityBtn.on('click',addCity)
+cityList.on('click', addCity);
 
 
 // Making the the dropdown for the states
-var difStates = [...new Set(tableData.map(x => x.state))]; 
-var stateBtn = d3.select("#stateBtn")
-var stateList = d3.select("#state-dropdown-menu")
+//
+var difStates = [...new Set(tableData.map(x => x.state).sort())];
+var stateList = d3.select("#state-dropdown-menu");
 
 function addState() {
     stateList.text("")
     for (var i = 0; i < difStates.length; i++) {
-        stateList.append("li").attr('class','stateListEle').text(difStates[i]);
+        stateList.append("option").attr('class', 'stateListEle').text(difStates[i]);
     }
 }
-stateBtn.on('click',addState)
+stateList.on('click', addState);
 
 // Making the the dropdown for the Country
-var difCountry = [...new Set(tableData.map(x => x.country))]; 
-var countryBtn = d3.select("#countryBtn")
-var countryList = d3.select("#country-dropdown-menu")
+//
+var difCountry = [...new Set(tableData.map(x => x.country).sort())];
+var countryList = d3.select("#country-dropdown-menu");
 
 function addcountry() {
     countryList.text("")
     for (var i = 0; i < difCountry.length; i++) {
-        countryList.append("li").attr('class','countryListEle').text(difCountry[i]);
+        countryList.append("option").attr('class', 'countryListEle').text(difCountry[i]);
     }
 }
-countryBtn.on('click',addcountry)
+countryList.on('click', addcountry);
 
 
 // Making the the dropdown for the Shape
-var difShape = [...new Set(tableData.map(x => x.shape))]; 
-var shapeBtn = d3.select("#shapeBtn")
-var shapeList = d3.select("#shape-dropdown-menu")
+//
+var difShape = [...new Set(tableData.map(x => x.shape).sort())];
+var shapeList = d3.select("#shape-dropdown-menu");
 
 function addShape() {
     shapeList.text("")
     for (var i = 0; i < difShape.length; i++) {
-        shapeList.append("li").attr('class','shapeListEle').text(difShape[i]);
+        shapeList.append("option").attr('class', 'shapeListEle').text(difShape[i]);
     }
 }
-shapeBtn.on('click',addShape)
+shapeList.on('click', addShape);
 
 
 
 
 
-// var inputDate = d3.select("#datetime").on("change",filterData);
-// var inputCity = d3.select("#city").on("change",filterData)
-var inputBtn = d3.select("#filter-btn").on("click",filterData);
 
+// Reset Table Button and function
+var filterReset = d3.select("#filter-reset");
 
-
-
-
-function filterData() {
-    // Prevent the page from refreshing
-    d3.event.preventDefault();
-
-    tbody.text("")
-
-    var inputDate = d3.select("#datetime").property("value")
-    var inputCity = d3.select("#city").property("value")
-    var inputState = d3.select("#state").property("value")
-    var inputCountry = d3.select("#country").property("value")
-    var inputShape = d3.select("#shape").property("value")
-
-    var filter = tableData.filter(ufo => ufo.datetime === inputDate || ufo.city === inputCity || ufo.state === inputState || ufo.country === inputCountry || ufo.shape === inputShape);
-    console.log(filter)
-
-   
-    filter.forEach((ufoRecord) => {
+filterReset.on("click", () => {
+    d3.selectAll("option").remove();
+    tableData.forEach((ufoRecord) => {
         // console.log(ufoRecord)
         var trow = tbody.append("tr");
         Object.entries(ufoRecord).forEach(([key, value]) => {
@@ -121,6 +109,114 @@ function filterData() {
             cell.text(value);
         })
     })
+});
+
+
+
+
+
+
+
+// Getting value of selected from city dropdown 
+cityList.on("change", () => {
+    var selected = cityList.node().value;
+    console.log(selected)
+})
+
+// Getting value of selected from state dropdown 
+stateList.on("change", () => {
+    var selected = stateList.node().value;
+    console.log(selected)
+})
+
+// Getting value of selected from city dropdown 
+countryList.on("change", () => {
+    var selected = countryList.node().value;
+    console.log(selected)
+})
+
+// Getting value of selected from city dropdown 
+shapeList.on("change", () => {
+    var selected = shapeList.node().value;
+    console.log(selected)
+})
+
+
+
+var inputBtn = d3.select("#filter-btn").on("click", // Update filter function// );
+var selectedFilters = {};
+
+// save elements, value and id of filters, conditional if filter value entered then add the filter aand value to filter object, if not clear filter from filter object
+// call filter data function
+
+function filterData(){
+    d3.event.preventDefault();
+    let filterData = tableData;
+    object.entries(selectedFilters).forEach(([key, value]) => {
+        filterData  = filterData.filter(row => row[key] === value);
+    });
+
+    filterData.forEach((ufoRecord) => {
+        // console.log(ufoRecord)
+        var trow = tbody.append("tr");
+        Object.entries(ufoRecord).forEach(([key, value]) => {
+            // console.log(key, value);
+            var cell = trow.append("td");
+            cell.text(value);
+        })
+    })
+}
+    
+    
+
+
+    // Getting value of selected from date dropdown 
+   
+    if (dateList.node().value != "") {
+        
+        datefilter.forEach((ufoRecord) => {
+            console.log(ufoRecord)
+            var trow = tbody.append("tr");
+            
+                console.log(key, value);
+                var cell = trow.append("td");
+                cell.text(value);
+            })
+        }) 
+    } 
+  
+}
+
+
+
+
+
+
+
+// || ufo.city === cityList.node().value)
+
+// var inputDate = d3.select("#datetime").on("change",filterData);
+// var inputCity = d3.select("#city").on("change",filterData)
+// 
+
+
+// function filterData() {
+//     // Prevent the page from refreshing
+//     d3.event.preventDefault();
+
+//     tbody.text("")
+
+//     var inputDate = d3.select("#datetime").property("value")
+//     var inputCity = d3.select("#city").property("value")
+//     var inputState = d3.select("#state").property("value")
+//     var inputCountry = d3.select("#country").property("value")
+//     var inputShape = d3.select("#shape").property("value")
+
+//     var filter = tableData.filter(ufo => ufo.datetime === inputDate || ufo.city === inputCity || ufo.state === inputState || ufo.country === inputCountry || ufo.shape === inputShape);
+//     console.log(filter)
+
+
+    
 
     // var cityFilter = tableData.filter();
     // console.log(cityFilter)
@@ -134,7 +230,6 @@ function filterData() {
     //     })
     // })
 
-  
-    
-    
-}
+
+
+
