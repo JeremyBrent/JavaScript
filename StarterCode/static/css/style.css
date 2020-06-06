@@ -43,13 +43,17 @@ body {
   margin: 0;
 }
 
+/* This CSS styles the text in the navbar */
+.navbar-brand {
+  color:orange;
+}
+
 /* This CSS styles the ufo icon in the navbar */
 .nav-ufo {
   position: absolute;
   bottom: 5px;
   left: 150px;
   width: 35px;
-  color: white;
 }
 
 /* Adding styles to the aside and filter form */
@@ -102,6 +106,7 @@ select {
   background-attachment: fixed;
   background-position: bottom center;
   background-size: cover;
+  color:orange;
 }
 
 .hero h1 {

@@ -17,53 +17,73 @@ tableData.forEach((ufoRecord) => {
 
 // Making the the dropdown for the dates
 var difDates = [...new Set(tableData.map(x => x.datetime))]; 
-var dateDrop = d3.select("#dateBtn")
+var dateBtn = d3.select("#dateBtn")
 var dateList = d3.select("#date-dropdown-menu")
 
 function addDate() {
     dateList.text("")
     for (var i = 0; i < difDates.length; i++) {
-        dateList.append("li").attr('id','dateListEle').text(difDates[i]);
+        dateList.append("li").attr('class','dateListEle').text(difDates[i]);
     }
 }
 
-function delDate() {
-    dateList.selectAll("li").remove();
-}
-
-if (dateDrop.attr("aria-expanded", "true")) {
-    dateDrop.on('click',addDate);
-} else {
-    dateDrop.on("click",delDate);
-}
-
-
+dateBtn.on('click',addDate);  
 
 
 // Making the the dropdown for the cities
 var difCities = [...new Set(tableData.map(x => x.city))]; 
-var cityDrop = d3.select("#cityBtn")
-
+var cityBtn = d3.select("#cityBtn")
+var cityList = d3.select("#city-dropdown-menu")
 function addCity() {
+    cityList.text("")
     for (var i = 0; i < difCities.length; i++) {
-        d3.select("#cityBtn").append("li").text(difCities[i]);
+        cityList.append("li").attr('class','cityListEle').text(difCities[i]);
     }
 }
 
-cityDrop.on('click',addCity)
-
+cityBtn.on('click',addCity)
 
 
 // Making the the dropdown for the states
 var difStates = [...new Set(tableData.map(x => x.state))]; 
-var stateDrop = d3.select("#stateBtn")
+var stateBtn = d3.select("#stateBtn")
+var stateList = d3.select("#state-dropdown-menu")
 
 function addState() {
+    stateList.text("")
     for (var i = 0; i < difStates.length; i++) {
-        d3.select("#stateBtn").append("li").text(difStates[i]);
+        stateList.append("li").attr('class','stateListEle').text(difStates[i]);
     }
 }
-stateDrop.on('click',addState)
+stateBtn.on('click',addState)
+
+// Making the the dropdown for the Country
+var difCountry = [...new Set(tableData.map(x => x.country))]; 
+var countryBtn = d3.select("#countryBtn")
+var countryList = d3.select("#country-dropdown-menu")
+
+function addcountry() {
+    countryList.text("")
+    for (var i = 0; i < difCountry.length; i++) {
+        countryList.append("li").attr('class','countryListEle').text(difCountry[i]);
+    }
+}
+countryBtn.on('click',addcountry)
+
+
+// Making the the dropdown for the Shape
+var difShape = [...new Set(tableData.map(x => x.shape))]; 
+var shapeBtn = d3.select("#shapeBtn")
+var shapeList = d3.select("#shape-dropdown-menu")
+
+function addShape() {
+    shapeList.text("")
+    for (var i = 0; i < difShape.length; i++) {
+        shapeList.append("li").attr('class','shapeListEle').text(difShape[i]);
+    }
+}
+shapeBtn.on('click',addShape)
+
 
 
 
