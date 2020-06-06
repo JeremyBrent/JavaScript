@@ -14,6 +14,60 @@ tableData.forEach((ufoRecord) => {
     })
 })
 
+
+// Making the the dropdown for the dates
+var difDates = [...new Set(tableData.map(x => x.datetime))]; 
+var dateDrop = d3.select("#dateBtn")
+var dateList = d3.select("#date-dropdown-menu")
+
+function addDate() {
+    dateList.text("")
+    for (var i = 0; i < difDates.length; i++) {
+        dateList.append("li").attr('id','dateListEle').text(difDates[i]);
+    }
+}
+
+function delDate() {
+    dateList.selectAll("li").remove();
+}
+
+if (dateDrop.attr("aria-expanded", "true")) {
+    dateDrop.on('click',addDate);
+} else {
+    dateDrop.on("click",delDate);
+}
+
+
+
+
+// Making the the dropdown for the cities
+var difCities = [...new Set(tableData.map(x => x.city))]; 
+var cityDrop = d3.select("#cityBtn")
+
+function addCity() {
+    for (var i = 0; i < difCities.length; i++) {
+        d3.select("#cityBtn").append("li").text(difCities[i]);
+    }
+}
+
+cityDrop.on('click',addCity)
+
+
+
+// Making the the dropdown for the states
+var difStates = [...new Set(tableData.map(x => x.state))]; 
+var stateDrop = d3.select("#stateBtn")
+
+function addState() {
+    for (var i = 0; i < difStates.length; i++) {
+        d3.select("#stateBtn").append("li").text(difStates[i]);
+    }
+}
+stateDrop.on('click',addState)
+
+
+
+
 // var inputDate = d3.select("#datetime").on("change",filterData);
 // var inputCity = d3.select("#city").on("change",filterData)
 var inputBtn = d3.select("#filter-btn").on("click",filterData);
