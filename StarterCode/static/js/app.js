@@ -23,13 +23,12 @@ tableData.forEach((ufoRecord) => {
 // Making the the dropdown for the dates
 //
 var difDates = [...new Set(tableData.map(x => x.datetime))];
-
 var dateList = d3.select("#date-dropdown-menu");
 
 function addDate() {
     dateList.text("");
     for (var i = 0; i < difDates.length; i++) {
-        dateList.append("option").attr('class', 'dateListEle').text(difDates[i]);
+        dateList.append("option").attr('class', 'listEle').text(difDates[i]);
     }
 }
 
@@ -40,11 +39,13 @@ dateList.on('click', addDate);
 // 
 var difCities = [...new Set(tableData.map(x => x.city).sort())];
 var cityList = d3.select("#city-dropdown-menu");
+
 function addCity() {
     cityList.text("");
     for (var i = 0; i < difCities.length; i++) {
-        cityList.append("option").attr('class', 'cityListEle').text(difCities[i]);
+        cityList.append("option").attr('class', 'listEle').text(difCities[i]);
     }
+    
 }
 
 cityList.on('click', addCity);
@@ -58,7 +59,7 @@ var stateList = d3.select("#state-dropdown-menu");
 function addState() {
     stateList.text("")
     for (var i = 0; i < difStates.length; i++) {
-        stateList.append("option").attr('class', 'stateListEle').text(difStates[i]);
+        stateList.append("option").attr('class', 'listEle').text(difStates[i]);
     }
 }
 stateList.on('click', addState);
@@ -71,7 +72,7 @@ var countryList = d3.select("#country-dropdown-menu");
 function addcountry() {
     countryList.text("")
     for (var i = 0; i < difCountry.length; i++) {
-        countryList.append("option").attr('class', 'countryListEle').text(difCountry[i]);
+        countryList.append("option").attr('class', 'listEle').text(difCountry[i]);
     }
 }
 countryList.on('click', addcountry);
@@ -85,7 +86,7 @@ var shapeList = d3.select("#shape-dropdown-menu");
 function addShape() {
     shapeList.text("")
     for (var i = 0; i < difShape.length; i++) {
-        shapeList.append("option").attr('class', 'shapeListEle').text(difShape[i]);
+        shapeList.append("option").attr('class', 'listEle').text(difShape[i]);
     }
 }
 shapeList.on('click', addShape);
@@ -99,7 +100,8 @@ shapeList.on('click', addShape);
 var filterReset = d3.select("#filter-reset");
 
 filterReset.on("click", () => {
-    d3.selectAll("option").remove();
+    selectedFilters = {}
+    d3.selectAll(".listEle").remove();
     tableData.forEach((ufoRecord) => {
         // console.log(ufoRecord)
         var trow = tbody.append("tr");
@@ -112,59 +114,63 @@ filterReset.on("click", () => {
 });
 
 
-
-
-
-
-
-// Getting value of selected from city dropdown 
-cityList.on("change", () => {
-    var selected = cityList.node().value;
-    console.log(selected)
-})
-
-// Getting value of selected from state dropdown 
-stateList.on("change", () => {
-    var selected = stateList.node().value;
-    console.log(selected)
-})
-
-// Getting value of selected from city dropdown 
-countryList.on("change", () => {
-    var selected = countryList.node().value;
-    console.log(selected)
-})
-
-// Getting value of selected from city dropdown 
-shapeList.on("change", () => {
-    var selected = shapeList.node().value;
-    console.log(selected)
-})
-
-
-
-var inputBtn = d3.select("#filter-btn").on("click", // Update filter function// );
+var inputBtn = d3.select("#filter-btn").on("click", filterData);
 var selectedFilters = {};
 
 // save elements, value and id of filters, conditional if filter value entered then add the filter aand value to filter object, if not clear filter from filter object
 // call filter data function
 
-function filterData(){
-    d3.event.preventDefault();
-    let filterData = tableData;
-    object.entries(selectedFilters).forEach(([key, value]) => {
-        filterData  = filterData.filter(row => row[key] === value);
-    });
+function filterer() {
+    var dateSelected = dateList.node().value;
+    var citySelected = cityList.node().value;
+    var stateSelected = stateList.node().value;
+    var countrySelected = countryList.node().value;
+    var shapeSelected = shapeList.node().value;
 
-    filterData.forEach((ufoRecord) => {
-        // console.log(ufoRecord)
+    if (dateSelected != "") {
+        selectedFilters["date"] = dateSelected;
+        console.log("date Not empty")
+    }
+    if (citySelected != "") {
+        selectedFilters["city"] = citySelected;
+        console.log("city Not empty")
+    }
+    if (stateSelected != "") {
+        selectedFilters["state"] = stateSelected;
+        console.log("state Not empty")
+    }
+    if (countrySelected != "") {
+        selectedFilters["country"] = countrySelected;
+        console.log("country Not empty")
+    }
+    if (shapeSelected != "") {
+        selectedFilters["shape"] = shapeSelected;
+        console.log("shape Not empty")
+    }
+    return selectedFilters
+}
+
+function filterData(){
+    filterer();
+    d3.event.preventDefault();
+    tbody.text("")
+    var wholeTable = tableData;
+    Object.entries(selectedFilters).forEach(([key, value]) => {
+        console.log(selectedFilters)
+        filteredData  = wholeTable.filter(x => {x.key === value});
+        console.log(filteredData)
+    
+    filteredData.forEach((ufoRecord) => {
+        console.log(ufoRecord)
         var trow = tbody.append("tr");
         Object.entries(ufoRecord).forEach(([key, value]) => {
             // console.log(key, value);
             var cell = trow.append("td");
             cell.text(value);
+            
         })
     })
+})
 }
     
     
@@ -172,20 +178,20 @@ function filterData(){
 
     // Getting value of selected from date dropdown 
    
-    if (dateList.node().value != "") {
+//     if (dateList.node().value != "") {
         
-        datefilter.forEach((ufoRecord) => {
-            console.log(ufoRecord)
-            var trow = tbody.append("tr");
+//         datefilter.forEach((ufoRecord) => {
+//             console.log(ufoRecord)
+//             var trow = tbody.append("tr");
             
-                console.log(key, value);
-                var cell = trow.append("td");
-                cell.text(value);
-            })
-        }) 
-    } 
+//                 console.log(key, value);
+//                 var cell = trow.append("td");
+//                 cell.text(value);
+//             })
+//         }) 
+//     } 
   
-}
+// }
 
 
 
@@ -204,7 +210,7 @@ function filterData(){
 //     // Prevent the page from refreshing
 //     d3.event.preventDefault();
 
-//     tbody.text("")
+//     
 
 //     var inputDate = d3.select("#datetime").property("value")
 //     var inputCity = d3.select("#city").property("value")
